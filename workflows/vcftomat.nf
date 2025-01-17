@@ -33,6 +33,16 @@ workflow VCFTOMAT {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
+    if (params.only_vcftomat){
+    //
+    // Convert VCFs to Count Matrices
+    //
+    VCF2MAT(
+        ch_samplesheet.map{ it -> [it[0], it[1]] },
+    )
+
+    ch_versions = ch_versions.mix(VCF2MAT.out.versions)
+    }else{
     //
     // add index to non-indexed VCFs
     //
@@ -186,7 +196,8 @@ workflow VCFTOMAT {
     )
 
     ch_versions = ch_versions.mix(VCF2MAT.out.versions)
-
+    
+    }
     //
     // Collate and save software versions
     //
