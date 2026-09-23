@@ -1,0 +1,27 @@
+name: diversity_pipeline_diff
+description: Analyze pipeline differences using permutation tests on null distribution
+keywords:
+  - diversity
+  - hill
+  - anova
+  - permutation
+  - pipeline
+tools:
+  - diversity_pipeline_diff:
+      name: diversity_pipeline_diff
+      description: Module that performs permutation tests to detect pipeline differences in diversity
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - nullhill_rdata
+    - path to nullhill.RData from m02_null_hill module
+output:
+  - anova_csv:
+    - "anova/*.csv"
+    - CSV files containing ANOVA results for each pipeline comparison level
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"

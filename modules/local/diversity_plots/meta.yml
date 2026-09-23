@@ -1,0 +1,32 @@
+name: diversity_plots
+description: Generate diagnostic plots of diversity distributions
+keywords:
+  - diversity
+  - hill
+  - plot
+  - visualization
+  - ggplot2
+tools:
+  - diversity_plots:
+      name: diversity_plots
+      description: Module that generates diagnostic plots of diversity distributions
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - nullhill_rdata
+    - path to nullhill.RData from m02_null_hill module
+  - - filteredhill_rdata
+    - path to filteredhill.RData from m03_filtered_hill module
+output:
+  - plots:
+    - "plots/*.pdf"
+    - PDF plot files
+  - plot_csv:
+    - "plots/*.csv"
+    - CSV files with plot statistics
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"

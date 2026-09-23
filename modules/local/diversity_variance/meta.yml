@@ -1,0 +1,26 @@
+name: diversity_variance
+description: Decompose variance across sample and variant replicates
+keywords:
+  - diversity
+  - variance
+  - decomposition
+  - replicate
+tools:
+  - diversity_variance:
+      name: diversity_variance
+      description: Module that performs variance decomposition across sample and variant replicates
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - nullhill_rdata
+    - path to nullhill.RData from m02_null_hill module
+output:
+  - variance_rdata:
+    - "*.RData"
+    - Variance decomposition results
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"
