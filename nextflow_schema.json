@@ -54,6 +54,17 @@
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
+                },
+                "run_diversity": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Run diversity analysis pipeline after VCF to counts conversion",
+                    "fa_icon": "fas fa-chart-area"
+                },
+                "demo_info": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Demographic info CSV for samples (sample_name, population_code, super_population_code)"
                 }
             }
         },

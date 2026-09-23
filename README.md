@@ -25,6 +25,7 @@
 7. Removes entries in the ID column with `bcftools/annotate` ([`bcftools`](https://samtools.github.io/bcftools/bcftools.html)) - his can be turned off by adding `--removeIDs false` to the `nextflow run` command.
 8. Converts the (merged) vcfs to a matrix using a custom R script written by @ellisdoro ([`R`](https://www.r-project.org/))
 9. Collects all reports into a MultiQC report ([`MultiQC`](http://multiqc.info/))
+10. **[Optional] Diversity Analysis**: When `--run_diversity` is enabled, the pipeline performs Hill numbers calculation, ANOVA tests, and generates diagnostic plots to compare diversity across different pipelines. See [Pipeline Parameters](#pipeline-parameters) for details.
 
 ![](./docs/images/vcftocounts-subway.excalidraw.png)
 
