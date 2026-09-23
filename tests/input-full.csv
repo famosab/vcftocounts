@@ -1,4 +1,4 @@
-sample,label,gvcf,vcf_path,vcf_index_path
+sample,pipeline_name,label,gvcf,vcf_path,vcf_index_path
 indexed_merge,callerA,false,https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/homo_sapiens/illumina/vcf/NA12878_chrM.vcf.gz,https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/homo_sapiens/illumina/vcf/NA12878_chrM.vcf.gz.tbi
 indexed_merge,callerB,false,https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz,https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi
 toindex_gvcf_merge,callerA,true,https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/homo_sapiens/illumina/gvcf/test.genome.g.vcf.gz,
