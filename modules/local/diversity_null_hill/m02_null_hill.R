@@ -31,25 +31,19 @@ Options:
 
 opt <- docopt::docopt(doc)
 
-# Resolve Files2Tuebingen/R path from this script's location
-try_resolve_path <- function(p, depth = 5) {
-  if (file.exists(p)) return(p)
-  d <- dirname(normalizePath(p))
-  for (i in 1:depth) d <- dirname(d)
-  candidate <- file.path(d, "Files2Tuebingen", "R")
-  if (file.exists(file.path(candidate, "hill_calculations.R"))) return(candidate)
-  stop("Cannot resolve Files2Tuebingen/R from ", p)
+# Use local src directory (self-contained module)
+script_dir <- dirname(normalizePath(sys.frame(1)$ofile))
+source_dir <- file.path(script_dir, "src")
+
+if (!file.exists(file.path(source_dir, "hill_calculations.R"))) {
+  stop("Cannot find hill_calculations.R in src/ directory: ", source_dir)
 }
-source_dir <- try_resolve_path(
-  ifelse(nchar(commandArgs(trailingOnly=FALSE)[1]) > 0,
-         commandArgs(trailingOnly=FALSE)[1],
-         normalizePath(sys.frame(1)$ofile))
-)
 
 message("=== Module 02: null_hill ===")
 
 # Source reference functions
 source(file.path(source_dir, "hill_calculations.R"))
+source(file.path(source_dir, "utils.R"))
 
 # Load prepared data
 e <- new.env()
@@ -57,8 +51,9 @@ load(opt[["--in"]], envir = e)
 res <- e$res
 
 # Create chunk directory
-if (!file.exists(opt[["--chunkDir"]])) {
-  dir.create(opt[["--chunkDir"]], recursive = TRUE)
+chunkDir <- if (!is.null(opt[["--chunkDir"]])) opt[["--chunkDir"]] else "chunks_null"
+if (!file.exists(chunkDir)) {
+  dir.create(chunkDir, recursive = TRUE)
 }
 
 message(sprintf("Reading prepared data: %s", opt[["--in"]]))
@@ -74,7 +69,7 @@ NullHillValues <- calculateNullHill(
   numSampleSets = as.numeric(opt[["--numSampleSets"]]),
   numVariantSets = as.numeric(opt[["--numVariantSets"]]),
   qHillNumber = as.numeric(opt[["--qHillNumber"]]),
-  chunkDir = opt[["--chunkDir"]],
+  chunkDir = chunkDir,
   show_progress = FALSE,
   evaluatePopulation = FALSE,
   evaluateSuperPopulation = FALSE,

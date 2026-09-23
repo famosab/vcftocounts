@@ -8,11 +8,12 @@ process DIVERSITY_PREPARE_DATA {
         : 'community.wave.seqera.io/library/bioconductor-variantannotation_r-docopt_r-matrix:3cf2f20fdc477746'}"
 
     input:
-    tuple val(meta), path(filtered_csv), path(null_csv), path:demo_info?
+    tuple val(meta), path(filtered_csv), path(null_csv)
+    path(demo_info)
 
     output:
-    tuple val(meta.id), path("prepared.RData"),       emit: prepared_rdata
-    tuple val(meta.id), path("prepared_summary.csv"), emit: prepared_summary_csv
+    tuple val(meta), path("prepared.RData"), emit: prepared_rdata
+    tuple val(meta), path("prepared_summary.csv"), emit: prepared_summary_csv
     tuple val("${task.process}"), val('diversity_prepare_data'), eval("echo 1.0.0"), topic: versions, emit: versions_diversity_prepare_data
 
     when:

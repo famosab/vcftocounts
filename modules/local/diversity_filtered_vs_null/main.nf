@@ -8,10 +8,11 @@ process DIVERSITY_FILTERED_VS_NULL {
         : 'community.wave.seqera.io/library/bioconductor-variantannotation_r-docopt_r-matrix:3cf2f20fdc477746'}"
 
     input:
-    tuple val(meta), path(nullhill_rdata), path(filteredhill_rdata)
+    tuple val(meta), path(nullhill_rdata)
+    path(filteredhill_rdata)
 
     output:
-    tuple val(meta.id), path("patterns/*.csv"), emit: pattern_csv
+    tuple val(meta), path("patterns/*.csv"), emit: pattern_csv
     tuple val("${task.process}"), val('diversity_filtered_vs_null'), eval("echo 1.0.0"), topic: versions, emit: versions_diversity_filtered_vs_null
 
     when:

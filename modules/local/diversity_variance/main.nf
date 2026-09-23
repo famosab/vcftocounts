@@ -11,7 +11,7 @@ process DIVERSITY_VARIANCE {
     tuple val(meta), path(nullhill_rdata)
 
     output:
-    tuple val(meta.id), path("variance.RData"), emit: variance_rdata
+    tuple val(meta), path("variance.RData"), emit: variance_rdata
     tuple val("${task.process}"), val('diversity_variance'), eval("echo 1.0.0"), topic: versions, emit: versions_diversity_variance
 
     when:

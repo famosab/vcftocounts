@@ -8,25 +8,25 @@ process DIVERSITY_NULL_HILL {
         : 'community.wave.seqera.io/library/bioconductor-variantannotation_r-docopt_r-matrix:3cf2f20fdc477746'}"
 
     input:
-    tuple val(meta), path(prepared_rdata), path:demo_info?, path:chunk_dir?
+    tuple val(meta), path(prepared_rdata)
+    path(demo_info)
+    path(chunk_dir)
 
     output:
-    tuple val(meta.id), path("nullhill.RData"),       emit: nullhill_rdata
-    tuple val(meta.id), path("chunks/*"),             emit: chunk_dir
+    tuple val(meta), path("nullhill.RData"), emit: nullhill_rdata
+    tuple val(meta), path("chunks/*"), emit: chunk_dir
     tuple val("${task.process}"), val('diversity_null_hill'), eval("echo 1.0.0"), topic: versions, emit: versions_diversity_null_hill
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def demo_arg = demo_info && !demo_info.isEmpty() ? "--demoInfo=${demo_info}" : ''
-    def chunk_arg = chunk_dir && !chunk_dir.isEmpty() ? "--chunkDir=${chunk_dir}" : '--chunkDir=chunks_null'
     """
     m02_null_hill.R \\
         --in=${prepared_rdata} \\
         --out=nullhill.RData \\
-        ${chunk_arg} \\
-        ${demo_arg}
+        --chunkDir=${chunk_dir} \\
+        ${demo_info ? "--demoInfo=${demo_info}" : ""}
     """
 
     stub:

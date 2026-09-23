@@ -106,13 +106,14 @@ workflow QBICPIPELINES_VCFTOCOUNTS {
     //
     // Optional: Run diversity analysis pipeline
     //
-    def ch_demo = params.demo_info ? channel.fromPath(params.demo_info).collect() : channel.value([])
+    def ch_demo = params.demo_info ? channel.fromPath(params.demo_info) : channel.value([])
     def ch_matrix = VCFTOCOUNTS.out.csv
+    def ch_samplesheet_file = channel.value(params.input) // original samplesheet file path
 
-    if (params.run_diversity && !ch_matrix.toList().isEmpty()) {
+    if (params.run_diversity) {
         DIVERSITY_ANALYSIS(
             ch_matrix,
-            samplesheet,
+            ch_samplesheet_file,
             ch_demo,
             params.outdir
         )

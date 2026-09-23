@@ -24,27 +24,19 @@ Options:
 
 opt <- docopt::docopt(doc)
 
-# Resolve Files2Tuebingen/R path from this script's location
-# Expected layout: modules/local/diversity_prepare_data/m01_prepare_data.R
-#                  ../../../Files2Tuebingen/R/
-try_resolve_path <- function(p, depth = 5) {
-  if (file.exists(p)) return(p)
-  d <- dirname(normalizePath(p))
-  for (i in 1:depth) d <- dirname(d)
-  candidate <- file.path(d, "Files2Tuebingen", "R")
-  if (file.exists(file.path(candidate, "data_io.R"))) return(candidate)
-  stop("Cannot resolve Files2Tuebingen/R from ", p)
+# Use local src directory (self-contained module)
+script_dir <- dirname(normalizePath(sys.frame(1)$ofile))
+source_dir <- file.path(script_dir, "src")
+
+if (!file.exists(file.path(source_dir, "data_io.R"))) {
+  stop("Cannot find data_io.R in src/ directory: ", source_dir)
 }
-source_dir <- try_resolve_path(
-  ifelse(nchar(commandArgs(trailingOnly=FALSE)[1]) > 0,
-         commandArgs(trailingOnly=FALSE)[1],
-         normalizePath(sys.frame(1)$ofile))
-)
 
 message("=== Module 01: prepare_data ===")
 
 # Source reference data_io functions
 source(file.path(source_dir, "data_io.R"))
+source(file.path(source_dir, "utils.R"))
 
 message(sprintf("Reading filtered CSV: %s", opt[["--filteredCSV"]]))
 message(sprintf("Reading null CSV: %s", opt[["--nullCSV"]]))

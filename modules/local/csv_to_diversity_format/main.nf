@@ -11,8 +11,7 @@ process CSV_TO_DIVERSITY_FORMAT {
     tuple val(meta), path(matrix_csv), path(samplesheet)
 
     output:
-    tuple val(meta.id), path("filtered_counts.csv"), emit: filtered_csv
-    tuple val(meta.id), path("null_counts.csv"),     emit: null_csv
+    tuple val(meta), path("filtered_counts.csv"), path("null_counts.csv"), emit: combined_csv
     tuple val("${task.process}"), val('csv_to_diversity_format'), eval("echo 1.0.0"), topic: versions, emit: versions_csv_to_diversity_format
 
     when:

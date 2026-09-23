@@ -8,10 +8,11 @@ process DIVERSITY_FILTERED_HILL {
         : 'community.wave.seqera.io/library/bioconductor-variantannotation_r-docopt_r-matrix:3cf2f20fdc477746'}"
 
     input:
-    tuple val(meta), path(prepared_rdata), path(nullhill_rdata)
+    tuple val(meta), path(prepared_rdata)
+    path(nullhill_rdata)
 
     output:
-    tuple val(meta.id), path("filteredhill.RData"),  emit: filteredhill_rdata
+    tuple val(meta), path("filteredhill.RData"), emit: filteredhill_rdata
     tuple val("${task.process}"), val('diversity_filtered_hill'), eval("echo 1.0.0"), topic: versions, emit: versions_diversity_filtered_hill
 
     when:

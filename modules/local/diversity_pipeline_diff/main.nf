@@ -11,7 +11,7 @@ process DIVERSITY_PIPELINE_DIFF {
     tuple val(meta), path(nullhill_rdata)
 
     output:
-    tuple val(meta.id), path("anova/*.csv"), emit: anova_csv
+    tuple val(meta), path("anova/*.csv"), emit: anova_csv
     tuple val("${task.process}"), val('diversity_pipeline_diff'), eval("echo 1.0.0"), topic: versions, emit: versions_diversity_pipeline_diff
 
     when:
