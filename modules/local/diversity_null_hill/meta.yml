@@ -1,0 +1,33 @@
+name: diversity_null_hill
+description: Calculate null distribution Hill numbers using Monte Carlo simulation
+keywords:
+  - diversity
+  - hill
+  - monte-carlo
+  - null
+tools:
+  - diversity_null_hill:
+      name: diversity_null_hill
+      description: Module that calculates null distribution of Hill numbers via Monte Carlo simulation
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - prepared_rdata
+    - path to prepared.RData from m01_prepare_data module
+  - - demo_info
+    - optional path to demographic info CSV (sample_name, population_code, super_population_code)
+  - - chunk_dir
+    - output directory for chunk files during calculation
+output:
+  - nullhill_rdata:
+    - "*.RData"
+    - NullHillValues containing null distribution of Hill numbers
+  - chunk_dir:
+    - "chunks/*"
+    - intermediate chunk files from parallel processing
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"
