@@ -1,0 +1,25 @@
+process {
+    withName: CSV_TO_DIVERSITY_FORMAT {
+        stub = true
+    }
+}
+
+nextflow_pipeline {
+    name "CSV conversion - stub test"
+    tag "csv_conversion"
+    tag "cpu"
+
+    test("-stub") {
+        options "-stub"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+    }
+}

@@ -1,0 +1,33 @@
+name: diversity_prepare_data
+description: Prepare diversity data from filtered and null count CSVs for analysis
+keywords:
+  - diversity
+  - hill
+  - preparation
+  - vcf
+tools:
+  - diversity_prepare_data:
+      name: diversity_prepare_data
+      description: Module that prepares data for downstream diversity analysis (Hill numbers calculation)
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - filtered_csv
+    - path to filtered count CSV (long format: variant_called, sample_name, pipeline, genotype)
+  - - null_csv
+    - path to null/unfiltered count CSV (same format)
+  - - demo_info
+    - optional path to demographic info CSV (sample_name, population_code, super_population_code)
+output:
+  - prepared_rdata:
+    - "*.RData"
+    - prepared checkpoint file containing filtered_data, null_data, demoRunandEthnicity, numvariants, total_variants
+  - prepared_summary_csv:
+    - "*.csv"
+    - summary CSV of prepared data statistics (sample counts, variant counts)
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"
