@@ -33,12 +33,8 @@ workflow DIVERSITY_ANALYSIS {
     // Stage 1: Run unified diversity analysis
     // DIVERSITY_ANALYSIS_PROCESS expects: tuple val(meta), path(matrix_csv), path(samplesheet) + path(demo_info) + path(outdir)
     //
-    // Map the matrix channel to create 3-tuples with the samplesheet and outdir
-    def ch_samplesheet_path = ch_samplesheet.collect().first()
-    
-    def ch_matrix_for_diversity = ch_matrix.map { meta, matrix_csv ->
-        [meta, matrix_csv, ch_samplesheet_path]
-    }
+    // Join the matrix channel with the samplesheet to create 3-tuples
+    def ch_matrix_for_diversity = ch_matrix.join(ch_samplesheet)
 
     DIVERSITY_ANALYSIS_PROCESS(
         ch_matrix_for_diversity,

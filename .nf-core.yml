@@ -12,8 +12,6 @@ lint:
   files_unchanged:
     - .github/CONTRIBUTING.md
     - .prettierignore
-    - .github/CONTRIBUTING.md
-    - .prettierignore
     - CODE_OF_CONDUCT.md
     - assets/nf-core-vcftocounts_logo_light.png
     - docs/images/nf-core-vcftocounts_logo_light.png
@@ -28,7 +26,7 @@ lint:
     - validation.help.afterText
     - validation.summary.beforeText
     - validation.summary.afterText
-nf_core_version: 4.0.2
+nf_core_version: 4.1.0
 repository_type: pipeline
 
 template:
