@@ -1,0 +1,16 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconda::bioconductor-variantannotation
+  - conda-forge::r-docopt
+  - conda-forge::r-dplyr
+  - conda-forge::r-readr
+  - conda-forge::r-data.table
+  - conda-forge::r-hillr
+  - conda-forge::r-future
+  - conda-forge::r-future.apply
+  - conda-forge::r-purrr
+  - conda-forge::r-progressr
+  - conda-forge::r-ggplot2
+  - conda-forge::r-vegan

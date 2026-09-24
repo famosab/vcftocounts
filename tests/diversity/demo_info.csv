@@ -1,3 +1,5 @@
-sample_name,population_code,super_population_code
-SAMPLE-1,CHB,East_Asian
-SAMPLE-2,JPT,East_Asian
+Run,population,Super_Population_Code,Population_Description,Super_Population_Description
+SAMPLE-1,EUR,Europe,European,Europe
+SAMPLE-2,ASN,Asia,East Asian,Asia
+SAMPLE-3,AFR,Africa,African,Africa
+SAMPLE-4,AMR,Americas,Amerindian,Americas

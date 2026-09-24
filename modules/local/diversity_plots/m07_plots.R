@@ -1,35 +1,40 @@
 #!/usr/bin/env Rscript
 # m07_plots.R
 # Module 07 - Generate plots for diversity analysis
-# Wraps the reference R analysis from Files2Tuebingen/R/plotting.R
 
-suppressMessages(library(docopt))
-suppressMessages(library(ggplot2))
+suppressMessages(library(data.table))
+suppressMessages(library(dplyr))
 
-doc <- '
-Module 07 - plots
-
-Usage:
-  m07_plots.R --nullHill=<n> --filteredHill=<f> --outdir=<o>
-  m07_plots.R -h|--help
-
-Options:
-  --nullHill=<n>        Input NullHillValues .RData file
-  --filteredHill=<f>    Input FilteredHillValues .RData file
-  --outdir=<o>          Output directory for plots [default: plots]
-'
-
-opt <- docopt::docopt(doc)
-
-# Use local src directory (self-contained module)
-script_dir <- dirname(normalizePath(sys.frame(1)$ofile))
-source_dir <- file.path(script_dir, "src")
-
-if (!file.exists(file.path(source_dir, "plotting.R"))) {
-  stop("Cannot find plotting.R in src/ directory: ", source_dir)
+# Parse arguments manually
+parse_arg <- function(args, pattern, default = NULL) {
+  idx <- grep(paste0("^", pattern, "="), args)
+  if (length(idx) == 0) return(default)
+  gsub(paste0("^", pattern, "="), "", args[idx])
 }
 
+args <- commandArgs(trailingOnly = TRUE)
+
+if (length(args) == 0 || any(args == "--help") || any(args == "-h")) {
+  cat("Usage:
+  m07_plots.R --nullHill=<NULL> --filteredHill=<FILT> [--outdir=<DIR>]
+  Options:
+    --nullHill     Input NullHillValues .RData file (required)
+    --filteredHill Input FilteredHillValues .RData file (required)
+    --outdir       Output directory [default: plots]
+  ")
+  quit(status = 0)
+}
+
+nullHill <- parse_arg(args, "--nullHill", stop("Required argument --nullHill not provided"))
+filteredHill <- parse_arg(args, "--filteredHill", stop("Required argument --filteredHill not provided"))
+outdir <- parse_arg(args, "--outdir", "plots")
+
+# Resolve script directory
+script_dir <- "/home/ubuntu/working/vcftocounts/modules/local/diversity_plots"
+source_dir <- file.path(script_dir, "src")
+
 message("=== Module 07: plots ===")
+message("Using source directory: ", source_dir)
 
 # Source reference functions
 source(file.path(source_dir, "plotting.R"))
@@ -37,16 +42,15 @@ source(file.path(source_dir, "utils.R"))
 
 # Load null hill values
 e1 <- new.env()
-load(opt[["--nullHill"]], envir = e1)
+load(nullHill, envir = e1)
 NullHillValues <- e1$NullHillValues
 
 # Load filtered hill values
 e2 <- new.env()
-load(opt[["--filteredHill"]], envir = e2)
+load(filteredHill, envir = e2)
 FilteredHillValues <- e2$FilteredHillValues
 
 # Create output directory
-outdir <- opt[["--outdir"]]
 if (!dir.exists(outdir)) {
   dir.create(outdir, recursive = TRUE)
 }

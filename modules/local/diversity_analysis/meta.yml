@@ -1,0 +1,49 @@
+name: "diversity_analysis"
+description: "Integrates Files2Tuebingen diversity analysis pipeline"
+keywords:
+  - diversity
+  - hill-numbers
+  - beta-diversity
+  - permutation-tests
+  - variance-decomposition
+tools:
+  - diversity_analysis:
+      description: "Files2Tuebingen diversity analysis integration"
+      tool_version: "1.0"
+      url: "https://github.com/Files2Tuebingen/diversity"
+input:
+  - matrix_csv:
+      type: file
+      description: "Genotype matrix CSV from VCF2COUNTS"
+      pattern: "*.csv"
+  - samplesheet:
+      type: file
+      description: "Samplesheet CSV"
+      pattern: "*.csv"
+  - demo_info:
+      type: file
+      description: "Optional demographic info CSV"
+      pattern: "*.csv"
+output:
+  - results_rdata:
+      type: file
+      description: "Final diversity analysis results"
+      pattern: "diversity_results.RData"
+  - anova_csv:
+      type: file
+      description: "ANOVA results"
+      pattern: "anova_results.csv"
+  - patterns_csv:
+      type: file
+      description: "Pattern comparison results"
+      pattern: "pattern_results.csv"
+  - variance_rdata:
+      type: file
+      description: "Variance decomposition results"
+      pattern: "variance.RData"
+  - plots:
+      type: file
+      description: "Generated plots"
+      pattern: "*.pdf"
+authors:
+  - "@yourusername"

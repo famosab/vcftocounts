@@ -24,8 +24,22 @@ Options:
 
 opt <- docopt::docopt(doc)
 
-# Use local src directory (self-contained module)
-script_dir <- dirname(normalizePath(sys.frame(1)$ofile))
+# Resolve Files2Tuebingen/R path - use local src directory
+# Try multiple methods to find script directory
+script_dir <- tryCatch({
+  # Method 1: sys.frame(1)$ofile
+  dirname(sys.frame(1)$ofile)
+}, error = function(e) {
+  # Method 2: commandArgs
+  args <- commandArgs(trailingOnly = FALSE)
+  script_arg <- grep("^--file=", args, value = TRUE)
+  if (length(script_arg) > 0) {
+    dirname(sub("^--file=", "", script_arg[1]))
+  } else {
+    getwd()
+  }
+})
+
 source_dir <- file.path(script_dir, "src")
 
 if (!file.exists(file.path(source_dir, "data_io.R"))) {
@@ -33,6 +47,7 @@ if (!file.exists(file.path(source_dir, "data_io.R"))) {
 }
 
 message("=== Module 01: prepare_data ===")
+message("Using source directory: ", source_dir)
 
 # Source reference data_io functions
 source(file.path(source_dir, "data_io.R"))
@@ -42,7 +57,7 @@ message(sprintf("Reading filtered CSV: %s", opt[["--filteredCSV"]]))
 message(sprintf("Reading null CSV: %s", opt[["--nullCSV"]]))
 
 # Optional demo info
-demoInfo <- if (!is.null(opt[["--demoInfo"]])) opt[["--demoInfo"]] else NULL
+demoInfo <- if (!is.null(opt[["--demoInfo"]]) && opt[["--demoInfo"]] != "") opt[["--demoInfo"]] else NULL
 
 res <- load_and_preprocess_data(
     filteredCSV = opt[["--filteredCSV"]],

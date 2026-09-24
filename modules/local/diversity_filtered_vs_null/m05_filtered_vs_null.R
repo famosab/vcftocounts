@@ -1,35 +1,40 @@
 #!/usr/bin/env Rscript
 # m05_filtered_vs_null.R
 # Module 05 - Compare filtered vs null pipeline patterns
-# Wraps the reference R analysis from Files2Tuebingen/R/variance_analysis.R
 
-suppressMessages(library(docopt))
+suppressMessages(library(data.table))
 suppressMessages(library(dplyr))
 
-doc <- '
-Module 05 - filtered vs null pattern comparison
-
-Usage:
-  m05_filtered_vs_null.R --nullHill=<n> --filteredHill=<f> --outdir=<o>
-  m05_filtered_vs_null.R -h|--help
-
-Options:
-  --nullHill=<n>        Input NullHillValues .RData file
-  --filteredHill=<f>    Input FilteredHillValues .RData file
-  --outdir=<o>          Output directory for results [default: patterns]
-'
-
-opt <- docopt::docopt(doc)
-
-# Use local src directory (self-contained module)
-script_dir <- dirname(normalizePath(sys.frame(1)$ofile))
-source_dir <- file.path(script_dir, "src")
-
-if (!file.exists(file.path(source_dir, "variance_analysis.R"))) {
-  stop("Cannot find variance_analysis.R in src/ directory: ", source_dir)
+# Parse arguments manually
+parse_arg <- function(args, pattern, default = NULL) {
+  idx <- grep(paste0("^", pattern, "="), args)
+  if (length(idx) == 0) return(default)
+  gsub(paste0("^", pattern, "="), "", args[idx])
 }
 
+args <- commandArgs(trailingOnly = TRUE)
+
+if (length(args) == 0 || any(args == "--help") || any(args == "-h")) {
+  cat("Usage:
+  m05_filtered_vs_null.R --nullHill=<NULL> --filteredHill=<FILT> --outdir=<DIR>
+  Options:
+    --nullHill     Input NullHillValues .RData file (required)
+    --filteredHill Input FilteredHillValues .RData file (required)
+    --outdir       Output directory [default: patterns]
+  ")
+  quit(status = 0)
+}
+
+nullHill <- parse_arg(args, "--nullHill", stop("Required argument --nullHill not provided"))
+filteredHill <- parse_arg(args, "--filteredHill", stop("Required argument --filteredHill not provided"))
+outdir <- parse_arg(args, "--outdir", "patterns")
+
+# Resolve script directory
+script_dir <- "/home/ubuntu/working/vcftocounts/modules/local/diversity_filtered_vs_null"
+source_dir <- file.path(script_dir, "src")
+
 message("=== Module 05: filtered_vs_null ===")
+message("Using source directory: ", source_dir)
 
 # Source reference functions
 source(file.path(source_dir, "variance_analysis.R"))
@@ -37,16 +42,15 @@ source(file.path(source_dir, "utils.R"))
 
 # Load null hill values
 e1 <- new.env()
-load(opt[["--nullHill"]], envir = e1)
+load(nullHill, envir = e1)
 NullHillValues <- e1$NullHillValues
 
 # Load filtered hill values
 e2 <- new.env()
-load(opt[["--filteredHill"]], envir = e2)
+load(filteredHill, envir = e2)
 FilteredHillValues <- e2$FilteredHillValues
 
 # Create output directory
-outdir <- opt[["--outdir"]]
 if (!dir.exists(outdir)) {
   dir.create(outdir, recursive = TRUE)
 }
@@ -55,14 +59,12 @@ message("Comparing Filtered vs Null Pipeline Patterns...")
 
 filtered_vs_null_results <- list()
 
-comparison_base_file <- file.path(outdir, "filtered_vs_null")
-
 # Compare total data if both exist
 if (!is.null(FilteredHillValues$PairwiseTotalData) && !is.null(NullHillValues$PairwiseTotalData)) {
   message("Comparing Total Data Patterns")
   filt_total <- list(AllData = FilteredHillValues$PairwiseTotalData)
   null_total <- list(AllData = NullHillValues$PairwiseTotalData)
-  comparison_file <- paste0(comparison_base_file, "_total.csv")
+  comparison_file <- file.path(outdir, "comparison_results.csv")
   
   filtered_vs_null_results$total_pattern <- compare_pipeline_patterns(
     filtered_pairwise = filt_total,
@@ -70,13 +72,6 @@ if (!is.null(FilteredHillValues$PairwiseTotalData) && !is.null(NullHillValues$Pa
     save_to_file = comparison_file,
     n_permutations = 9999
   )
-}
-
-# Summary
-if (length(filtered_vs_null_results) > 0) {
-  message(sprintf("Filtered vs Null Pattern Comparison Complete: %d level(s)", length(filtered_vs_null_results)))
-} else {
-  message("No comparison data available")
 }
 
 # Save results
