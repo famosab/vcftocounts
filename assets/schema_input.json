@@ -13,6 +13,12 @@
                 "errorMessage": "Sample name must be provided and cannot contain spaces",
                 "meta": ["id"]
             },
+            "pipeline_name": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Pipeline name must be provided and cannot contain spaces (e.g. 'freebayes', 'strelka', 'gatk')",
+                "meta": ["pipeline_name"]
+            },
             "label": {
                 "type": "string",
                 "pattern": "^\\S+$",
@@ -46,6 +52,6 @@
                 "errorMessage": "Index of VCF file must have extension '.tbi'- Optional"
             }
         },
-        "required": ["sample", "label", "gvcf", "vcf_path"]
+        "required": ["sample", "pipeline_name", "label", "gvcf", "vcf_path"]
     }
 }

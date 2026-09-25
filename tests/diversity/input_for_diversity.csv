@@ -1,0 +1,2 @@
+sample,pipeline_name,label,gvcf,vcf_path,vcf_index_path
+chr22,chr22,chr22_label,false,false,false

@@ -1,0 +1,4 @@
+sample,label,pipeline_name,gvcf,vcf_path,vcf_index_path
+sample-1,chr22-sample1,freebayes,false,/dev/null,
+sample-2,chr22-sample2,strelka,false,/dev/null,
+sample-3,chr22-sample3,gatk,false,/dev/null,

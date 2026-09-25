@@ -313,5 +313,6 @@ workflow VCFTOCOUNTS {
     )
 
     emit:
+    csv = VCF2COUNTS.out.csv
     multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
 }

@@ -1,0 +1,23 @@
+nextflow_pipeline {
+    name "Diversity analysis - stub test"
+    script "../main.nf"
+    tag "diversity"
+    tag "cpu"
+
+    test("-profile test --run_diversity -stub") {
+        options "-stub"
+
+        when {
+            params {
+                outdir = "$outputDir"
+                input = "${projectDir}/tests/diversity/input_diversity.csv"
+                run_diversity = true
+                demo_info = "${projectDir}/tests/diversity/demo_info.csv"
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+    }
+}

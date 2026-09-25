@@ -24,3 +24,8 @@ conf/test_full_ncgm.config
 
 modules/nf-core/**/tests
 subworkflows/nf-core/**/tests
+# Local Files2Tuebingen source files (copied from external repo)
+Files2Tuebingen/
+
+# Local R source files for diversity modules
+modules/local/diversity_*/src/

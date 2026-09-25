@@ -14,6 +14,7 @@
 */
 
 include { VCFTOCOUNTS             } from './workflows/vcftocounts'
+include { DIVERSITY_ANALYSIS      } from './workflows/diversity_analysis'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_vcftocounts_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_vcftocounts_pipeline'
 include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_vcftocounts_pipeline'
@@ -89,7 +90,7 @@ workflow QBICPIPELINES_VCFTOCOUNTS {
     dict = params.dict ? channel.fromPath(params.dict).collect() : channel.value([])
 
     //
-    // WORKFLOW: Run pipeline
+    // WORKFLOW: Run VCF to counts pipeline
     //
     VCFTOCOUNTS(
         samplesheet,
@@ -101,6 +102,26 @@ workflow QBICPIPELINES_VCFTOCOUNTS {
         params.multiqc_methods_description,
         params.outdir,
     )
+
+    //
+    // Optional: Run diversity analysis pipeline
+    //
+    if (params.run_diversity) {
+        // Get the CSV output from VCF2COUNTS
+        def ch_matrix = VCFTOCOUNTS.out.csv
+        // Get the original samplesheet file path
+        def ch_samplesheet_file = channel.fromPath(params.input)
+        // Get the demo info if provided
+        def ch_demo = params.demo_info ? channel.fromPath(params.demo_info) : channel.value([])
+        
+        // Run diversity analysis with proper channel handling
+        DIVERSITY_ANALYSIS(
+            ch_matrix,
+            ch_samplesheet_file,
+            ch_demo,
+            params.outdir
+        )
+    }
 
     emit:
     multiqc_report = VCFTOCOUNTS.out.multiqc_report // channel: /path/to/multiqc_report.html

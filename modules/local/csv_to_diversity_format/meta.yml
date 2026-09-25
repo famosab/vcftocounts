@@ -1,0 +1,31 @@
+name: csv_to_diversity_format
+description: Convert vcf2counts wide-format genotype matrix to Files2Tuebingen long-format CSVs
+keywords:
+  - csv
+  - vcf
+  - diversity
+  - format conversion
+tools:
+  - csv_to_diversity_format:
+      name: csv_to_diversity_format
+      description: Convert 0/1/2 genotype matrix (wide format) to long-format CSV for diversity analysis
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - matrix_csv
+    - path to genotype matrix CSV (wide format: rows=variants, cols=samples, values=0/1/2)
+  - - samplesheet
+    - path to samplesheet with sample, pipeline_name columns
+output:
+  - filtered_csv:
+    - "*.csv"
+    - long-format filtered count CSV (variant_called, sample_name, pipeline, genotype)
+  - null_csv:
+    - "*.csv"
+    - long-format null count CSV (same format)
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"

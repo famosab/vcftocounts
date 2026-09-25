@@ -1,0 +1,29 @@
+name: diversity_filtered_vs_null
+description: Compare filtered vs null pipeline patterns using permutation tests
+keywords:
+  - diversity
+  - hill
+  - pattern
+  - comparison
+  - permutation
+tools:
+  - diversity_filtered_vs_null:
+      name: diversity_filtered_vs_null
+      description: Module that tests whether filtering differentially affects pipeline comparisons
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - nullhill_rdata
+    - path to nullhill.RData from m02_null_hill module
+  - - filteredhill_rdata
+    - path to filteredhill.RData from m03_filtered_hill module
+output:
+  - pattern_csv:
+    - "patterns/*.csv"
+    - CSV files containing pattern comparison results
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"

@@ -10,7 +10,10 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir"],
+            "required": [
+                "input",
+                "outdir"
+            ],
             "properties": {
                 "input": {
                     "type": "string",
@@ -54,6 +57,16 @@
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
+                },
+                "run_diversity": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Run diversity analysis pipeline after VCF to counts conversion",
+                    "fa_icon": "fas fa-chart-area"
+                },
+                "demo_info": {
+                    "type": "string",
+                    "description": "Demographic info CSV for samples (sample_name, population_code, super_population_code)"
                 }
             }
         },
@@ -170,7 +183,14 @@
                     "description": "Method used to save pipeline results to output directory.",
                     "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
                     "fa_icon": "fas fa-copy",
-                    "enum": ["symlink", "rellink", "link", "copy", "copyNoFollow", "move"],
+                    "enum": [
+                        "symlink",
+                        "rellink",
+                        "link",
+                        "copy",
+                        "copyNoFollow",
+                        "move"
+                    ],
                     "hidden": true
                 },
                 "email_on_fail": {
@@ -240,7 +260,10 @@
                     "hidden": true
                 },
                 "help": {
-                    "type": ["boolean", "string"],
+                    "type": [
+                        "boolean",
+                        "string"
+                    ],
                     "description": "Display the help message."
                 },
                 "help_full": {
@@ -267,5 +290,11 @@
         {
             "$ref": "#/$defs/generic_options"
         }
-    ]
+    ],
+    "manifest": {
+        "name": "qbic-pipelines/vcftocounts",
+        "nextflowVersion": ">=24.04.2",
+        "version": "1.0.0",
+        "homePage": "https://github.com/qbic-pipelines/vcftocounts"
+    }
 }

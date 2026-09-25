@@ -1,0 +1,28 @@
+name: diversity_filtered_hill
+description: Calculate Hill numbers for the filtered (observed) data
+keywords:
+  - diversity
+  - hill
+  - filtered
+  - observed
+tools:
+  - diversity_filtered_hill:
+      name: diversity_filtered_hill
+      description: Module that calculates Hill numbers for observed/filtered data
+      homepage: https://github.com/qbic-pipelines/vcftocounts
+input:
+  - - prepared_rdata
+    - path to prepared.RData from m01_prepare_data module
+  - - nullhill_rdata
+    - path to nullhill.RData from m02_null_hill module
+output:
+  - filteredhill_rdata:
+    - "*.RData"
+    - FilteredHillValues containing Hill numbers for filtered data
+  - versions:
+    - "versions.yml"
+    - software versions
+authors:
+  - "@qbic-pipelines"
+maintainers:
+  - "@qbic-pipelines"

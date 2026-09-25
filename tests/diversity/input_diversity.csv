@@ -1,0 +1,5 @@
+sample,pipeline_name,label,gvcf,vcf_path,vcf_index_path
+SAMPLE-1,pipelineA,chr22-pipelineA,false,tests/chr22_sample.vcf.gz,tests/chr22_sample.vcf.gz.tbi
+SAMPLE-1,pipelineB,chr22-pipelineB,false,tests/chr22_sample.vcf.gz,tests/chr22_sample.vcf.gz.tbi
+SAMPLE-2,pipelineA,chr22-pipelineA,false,tests/chr22_sample.vcf.gz,tests/chr22_sample.vcf.gz.tbi
+SAMPLE-2,pipelineB,chr22-pipelineB,false,tests/chr22_sample.vcf.gz,tests/chr22_sample.vcf.gz.tbi
