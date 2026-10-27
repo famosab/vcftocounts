@@ -15,6 +15,10 @@ include { BCFTOOLS_VIEW                         } from '../modules/nf-core/bcfto
 include { BCFTOOLS_MERGE                        } from '../modules/nf-core/bcftools/merge'
 include { BCFTOOLS_ANNOTATE                     } from '../modules/nf-core/bcftools/annotate'
 include { VCF2COUNTS                            } from '../modules/local/vcf2counts'
+include { COUNTS2RDS                            } from '../modules/local/counts2rds'
+include { DIVANALYSIS_HILL                      } from '../modules/local/divanalysis/hill'
+include { DIVANALYSIS_PIPECOMP                  } from '../modules/local/divanalysis/pipecomp'
+include { DIVANALYSIS_PLOTS                     } from '../modules/local/divanalysis/plots'
 include { paramsSummaryMap                      } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc                  } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML                } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -252,8 +256,26 @@ workflow VCFTOCOUNTS {
     //
     // Convert VCFs to Count Matrices
     //
-    VCF2COUNTS(
-        ch_removedIDs_vcfs.map { it -> [it[0], it[1]] }
+    VCF2COUNTS(ch_removedIDs_vcfs.map { it -> [it[0], it[1]] })
+    ch_unfiltered_csvs = VCF2COUNTS.out.csv.map{meta, csv -> csv}.collect()
+
+    ch_metadata_table = channel.fromPath("/mnt/volume/demo-data/balancedsamplesmetadata.csv").collect().map{ file -> [[id:'metadata'], file]}
+
+    COUNTS2RDS(
+        ch_unfiltered_csvs.map{ csvs -> [[id:'all_samples', mode:'null'], csvs]},
+        ch_metadata_table
+    )
+
+    DIVANALYSIS_HILL(
+        COUNTS2RDS.out.rds
+    )
+
+    DIVANALYSIS_PIPECOMP(
+        DIVANALYSIS_HILL.out.rds
+    )
+
+    DIVANALYSIS_PLOTS(
+        DIVANALYSIS_PIPECOMP.out.rds
     )
 
     //
